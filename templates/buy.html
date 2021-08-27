@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Buy
+{% endblock %}
+
+{% block main %}
+    {% if bought == "Insufficient" %}
+        <div class="alert alert-danger" role="alert">
+            Insufficient Funds
+        </div>
+    {% elif bought == "Success" %}
+        <div class ="alert alert-success" role="alert">
+            Successfully bought!
+        </div>
+    {% elif bought == "Zero" %}
+        <div class="alert alert-danger" role="alert">
+            Cannot buy zero shares!
+        </div>
+    {% endif %}
+    {{shares}}
+    <form action="/buy" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="symbol" placeholder="Symbol" type="text">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="shares" placeholder="Shares" type="text" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" name="itemConsumption">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit" name="action">Buy</button>
+        </div>
+    </form>
+{% endblock %}

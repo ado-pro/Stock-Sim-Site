@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Portfolio
+{% endblock %}
+
+{% block main %}
+    {% if sold_ == "Success" %}
+        <div class="alert alert-success" role="alert">
+            Successfully sold!
+        </div>
+    {% elif sold_ == "Fail" %}
+        <div class="alert alert-danger" role="alert">
+            Unable to sell stock!
+        </div>
+    {% elif sold_ == "Zero" %}
+        <div class="alert alert-danger" role="alert">
+            Unable to sell zero shares!
+        </div>
+    {% elif bought == "Insufficient" %}
+        <div class="alert alert-danger" role="alert">
+            Insufficient Funds
+        </div>
+    {% elif bought == "Success" %}
+        <div class ="alert alert-success" role="alert">
+            Successfully bought!
+        </div>
+    {% elif bought == "Zero" %}
+        <div class="alert alert-danger" role="alert">
+            Cannot buy zero shares!
+        </div>
+    {% endif %}
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Shares</th>
+                <th scope="col">Symbol</th>
+                <th scope="col">Name</th>
+                <th scope="col">Buy Price</th>
+                <th scope="col">Current Price</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{row["Shares"]}}</td>
+                <td>{{row["Symbol"]}}</td>
+                <td>{{row["Name"]}}</td>
+                <td>{{usd(row["Price"])}}</td>
+                <td>{{usd(lookup(row["Symbol"])["price"])}}</td>
+                <td>{{usd(row["TOTAL"])}}</td>
+            </tr>
+            {% endfor %}
+            <tr class="table-active">
+                <td>CASH</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><strong>{{usd(cash)}}</stronG></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{usd(TOTAL)}}</td>
+            </tr>
+        </tbody>
+    </table>
+        <button class="open-button" onclick="openForm()">Buy / Sell</button>
+        <div class ="form-popup" id="myForm">
+            <br>
+            <form method="POST">
+            <select name="symbol" class="mdb-select md-form" method="POST">
+            <option value="Symbol" disabled selected>Symbol</option>
+            {% for row in rows %}
+                <option>{{row["Symbol"]}}</option>
+            {% endfor %}
+            </select>
+            <br>
+            <br>
+            <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="shares" placeholder="Shares" type="text" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" name="itemConsumption">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit" formaction="/buy" name="action" value="Buy">Buy</button>
+            <button class="btn btn-primary" type="submit" formaction="/sell" name="action" value="Sell">Sell</button>
+        </div>
+        </form>
+
+        </div>
+
+
+{% endblock %}

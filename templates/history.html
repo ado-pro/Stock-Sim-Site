@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Symbol</th>
+            <th scope="col">Shares</th>
+            <th scope="col">Trade</th>
+            <th scope="col">Price</th>
+            <th scope="col">Transaction Date</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for row in query %}
+            <tr>
+                <td>{{row["Symbol"]}}</td>
+                <td>{{row["Shares"]}}</td>
+                <td>{{row["Option"]}}</td>
+                <td>{{usd(row["Price"])}}</td>
+                <td>{{row["Date"]}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

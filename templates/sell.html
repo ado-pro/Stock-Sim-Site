@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block main %}
+    {% if sold_ == "Success" %}
+        <div class="alert alert-success" role="alert">
+            Successfully sold!
+        </div>
+    {% elif sold_ == "Fail" %}
+        <div class="alert alert-danger" role="alert">
+            You do not own enough of this stock to sell!
+        </div>
+    {% elif sold_ == "Zero" %}
+        <div class="alert alert-danger" role="alert">
+            Unable to sell zero shares!
+        </div>
+    {% endif %}
+    <form action="/sell" method="POST">
+        <select name="symbol" class="selectpicker" method="POST">
+        <option value="Symbol" disabled selected>Symbol</option>
+        {% for row in stocks %}
+            <option>{{row["Symbol"]}}</option>
+        {% endfor %}
+        </select>
+        <br>
+        <br>
+        <div class="form-group">
+            <input type="number" autofocus class="form-control" name="shares" min="0" step="1">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit" name="action">Sell</button>
+        </div>
+    </form>
+{% endblock %}
